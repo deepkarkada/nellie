@@ -27,18 +27,13 @@ class PrintModule(abstract.AbstractModule):
     def input_ius():
         return [text.common.SpeechRecognitionIU, text.common.TextIU]
 
-    @staticmethod
-    def __init_subclass__(cls, **kwargs):
-        pass
-
     def __init__(self, forward_after_final=False, **kwargs):
         super().__init__(**kwargs)
         self.forward_after_final = forward_after_final
-        print("initialized")
 
     def process_iu(self, input_iu):
         if isinstance(input_iu, text.common.SpeechRecognitionIU):
             if self.forward_after_final and not input_iu.final:
                 return
         asr_result = input_iu.get_text()
-        print(asr_result)
+        print("Nellie: " + str(asr_result))
