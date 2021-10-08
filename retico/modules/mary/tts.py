@@ -6,6 +6,10 @@ import urllib
 import random
 from hashlib import blake2b
 
+from retico.core.audio.common import SpeechIU
+
+from retico.core.text.common import GeneratedTextIU
+
 from retico.core import abstract, text, audio
 
 
@@ -180,11 +184,11 @@ class MaryTTSModule(abstract.AbstractModule):
 
     @staticmethod
     def input_ius():
-        return [text.common.GeneratedTextIU]
+        return [GeneratedTextIU]
 
     @staticmethod
     def output_iu():
-        return audio.common.SpeechIU
+        return SpeechIU
 
     def __init__(
         self,

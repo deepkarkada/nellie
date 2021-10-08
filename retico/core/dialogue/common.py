@@ -22,7 +22,7 @@ class DialogueActIU(abstract.IncrementalUnit):
         return "Dialogue Act Incremental Unit"
 
     def __init__(self, creator=None, iuid=0, previous_iu=None, grounded_in=None,
-                 payload=None, act=None, concepts=None, **kwargs):
+                 payload=None, act=None, concepts=None, confidence=0.0, **kwargs):
         """Initialize the DialogueActIU with act and concepts.
 
         Args:
@@ -35,7 +35,7 @@ class DialogueActIU(abstract.IncrementalUnit):
         self.concepts = {}
         if concepts:
             self.concepts = concepts
-        self.confidence = 0.0
+        self.confidence = confidence
 
     def set_act(self, act, concepts=None, confidence=1.0):
         """Set the act and concept of the IU.
