@@ -49,11 +49,6 @@ class DialogueManager(abstract.AbstractModule):
     def process_iu(self, input_iu):
         act, concepts, confidence = self.get_current_dialogue_act(input_iu)
 
-        if self.target_memory.get_human_turns() >= THRESHOLD_SKIP:
-            output_iu = self.create_iu(input_iu)
-            output_iu.set_act("Skip")
-            return output_iu
-
         if not act:
             return None
 
@@ -69,3 +64,8 @@ class DialogueManager(abstract.AbstractModule):
                 output_iu = self.create_iu(input_iu)
                 output_iu.set_act("TargetIdentified", self.country_to_ids[country_max_conf])
                 return output_iu
+
+        if self.target_memory.get_human_turns() >= THRESHOLD_SKIP:
+            output_iu = self.create_iu(input_iu)
+            output_iu.set_act("Skip")
+            return output_iu

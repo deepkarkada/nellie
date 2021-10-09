@@ -30,9 +30,11 @@ class NaturalLanguageGeneration(abstract.AbstractModule):
     def output_iu():
         return GeneratedTextIU
 
-    def __init__(self, incremental=False, **kwargs):
+    def __init__(self, game_memory, target_memory, incremental=False, **kwargs):
         super().__init__(**kwargs)
         self.incremental = incremental
+        self.game_memory = game_memory
+        self.target_memory = target_memory
 
     def get_current_dialogue_act(self, input_iu):
         return input_iu.act, input_iu.concepts, input_iu.confidence
@@ -46,4 +48,8 @@ class NaturalLanguageGeneration(abstract.AbstractModule):
         output_iu = self.create_iu(input_iu)
         output_iu.payload = response_dictionary[act]
         output_iu.dispatch = True
+
+        #Increment the agent turns before sending the IU
+        self.target_memory.increment_agent_turns()
+        self.game_memory.increment_total_agent_turns()
         return output_iu

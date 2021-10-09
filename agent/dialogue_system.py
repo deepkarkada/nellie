@@ -20,7 +20,7 @@ class Agent():
         self.segmenter = Segmenter(game_memory=self.game_memory, target_memory=self.target_memory)
         self.nlu = KGBasedNLU()
         self.dm = DialogueManager(game_memory=self.game_memory, target_memory=self.target_memory)
-        self.nlg = NaturalLanguageGeneration()
+        self.nlg = NaturalLanguageGeneration(game_memory=self.game_memory, target_memory=self.target_memory)
         self.printer = PrintModule()
 
     def setup(self):
