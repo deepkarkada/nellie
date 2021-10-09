@@ -1,5 +1,4 @@
 """A module that manages the dialogue flow based on the NLU input"""
-
 from retico.core import abstract
 from retico.core.dialogue.common import DialogueActIU
 
@@ -28,8 +27,6 @@ class DialogueManager(abstract.AbstractModule):
         return DialogueActIU
 
     def read_country_ids(self):
-        self.country_to_ids = {}
-        self.ids_to_country = {}
         with open("../data/agent/countrynames_id.txt") as f:
             for line in f:
                 (key, val) = line.split("\t")
@@ -37,9 +34,13 @@ class DialogueManager(abstract.AbstractModule):
                 self.country_to_ids[val] = key
                 self.ids_to_country[key] = val
 
-    def __init__(self, incremental=True, **kwargs):
+    def __init__(self, game_memory, target_memory, incremental=True, **kwargs):
         super().__init__(**kwargs)
+        self.ids_to_country = {}
+        self.country_to_ids = {}
         self.incremental = incremental
+        self.game_memory = game_memory
+        self.target_memory = target_memory
         self.read_country_ids()
 
     def get_current_dialogue_act(self, input_iu):
@@ -47,6 +48,12 @@ class DialogueManager(abstract.AbstractModule):
 
     def process_iu(self, input_iu):
         act, concepts, confidence = self.get_current_dialogue_act(input_iu)
+
+        if self.target_memory.get_human_turns() >= THRESHOLD_SKIP:
+            output_iu = self.create_iu(input_iu)
+            output_iu.set_act("Skip")
+            return output_iu
+
         if not act:
             return None
 
@@ -58,7 +65,7 @@ class DialogueManager(abstract.AbstractModule):
 
             print("DM is processing a DA of type " + str(act) + " with max confidence country for " + str(country_max_conf) + " (" + str(max_conf) + ")")
 
-            if max_conf > THRESHOLD_IDENTIFIED:
+            if max_conf >= THRESHOLD_IDENTIFIED:
                 output_iu = self.create_iu(input_iu)
                 output_iu.set_act("TargetIdentified", self.country_to_ids[country_max_conf])
                 return output_iu
