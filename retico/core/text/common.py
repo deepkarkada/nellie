@@ -22,6 +22,24 @@ class TextIU(abstract.IncrementalUnit):
         return self.payload
 
 
+class SegmentedTextIU(abstract.IncrementalUnit):
+    """An IU that contains a dictionary with lists of text chunks, divided by the NLU module that should consider them
+    Sample Payload: {"Description": [["size","it is big"],["continent", "in Africa"]], "Question:" []}
+    """
+
+    @staticmethod
+    def type():
+        return "Segmented Text IU"
+
+    def get_chunks_by_key(self, key):
+        """Return the list with individual text chunks for a given key
+
+        Returns:
+            list: A list of individual chunks
+        """
+        return self.payload[key]
+
+
 class GeneratedTextIU(TextIU):
     """An IU that contains generated text.
 
@@ -45,7 +63,7 @@ class SpeechRecognitionIU(TextIU):
         return "Speech Recgonition IU"
 
     def __init__(
-        self, creator, iuid=0, previous_iu=None, grounded_in=None, payload=None
+            self, creator, iuid=0, previous_iu=None, grounded_in=None, payload=None
     ):
         super().__init__(
             creator,

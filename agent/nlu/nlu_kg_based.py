@@ -1,7 +1,7 @@
 """A module for Natural Language Understanding using knowledge graphs"""
 
 from retico.core import abstract
-from retico.core.text.common import SpeechRecognitionIU, TextIU
+from retico.core.text.common import SpeechRecognitionIU, TextIU, SegmentedTextIU
 from retico.core.dialogue.common import DialogueActIU
 
 
@@ -20,7 +20,7 @@ class KGBasedNLU(abstract.AbstractModule):
 
     @staticmethod
     def input_ius():
-        return [SpeechRecognitionIU, TextIU]
+        return [SegmentedTextIU]
 
     @staticmethod
     def output_iu():
@@ -31,8 +31,7 @@ class KGBasedNLU(abstract.AbstractModule):
         self.incremental = incremental
 
     def get_current_text(self, input_iu):
-        if self.incremental or type(input_iu) is TextIU or (type(input_iu) is SpeechRecognitionIU and input_iu.final):
-            return input_iu.get_text()
+        return input_iu.get_chunks_by_key("Description")[0][1]
 
     def process_iu(self, input_iu):
         current_text = self.get_current_text(input_iu)

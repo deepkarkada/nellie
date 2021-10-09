@@ -2,6 +2,7 @@
 A module that reads chat input from the command line
 """
 import threading
+import time
 
 from retico.core.text.common import SpeechRecognitionIU, TextIU
 
@@ -23,14 +24,19 @@ class ConsoleInput(abstract.AbstractProducingModule):
     def output_iu():
         return TextIU
 
-    def __init__(self, **kwargs):
+    def __init__(self, agent, **kwargs):
         super().__init__(**kwargs)
+        self.agent = agent
 
     def process_iu(self, input_iu):
-        input("User: ")
-        output_iu = self.create_iu()
-        output_iu.payload = "Test"
-        return output_iu
+        time.sleep(2)
+        text_in = input("User: ")
+        if text_in == "!QUIT!":
+            self.agent.stop_agent()
+        else:
+            output_iu = self.create_iu()
+            output_iu.payload = text_in
+            return output_iu
 
 
 
