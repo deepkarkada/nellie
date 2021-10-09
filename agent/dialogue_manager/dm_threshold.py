@@ -6,13 +6,16 @@ THRESHOLD_IDENTIFIED = 0.3
 THRESHOLD_SKIP = 5
 
 class DialogueManager(abstract.AbstractModule):
-    """Currently a dummy DM Module
-    TODO: Incorpoate any kind of meaningful DM
+    """Threshold-based Dialogue Manager.
+    This is a simple baseline DM that can only produce two Output-DAs:
+    (i) TargetIdentified: If the threshold of one of the countries exceeds the THRESHOLD_IDENTIFIER, the agent
+    says "Got it"
+    (ii) Skip: If the human took at least THRESHOLD_SKIP turns, the agents says "Let's skip"
     """
 
     @staticmethod
     def name():
-        return "Custom Dialogue Manager"
+        return "Threshold-based Dialogue Manager"
 
     @staticmethod
     def description():
