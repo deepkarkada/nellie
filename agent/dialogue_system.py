@@ -1,5 +1,6 @@
 from agent.dialogue_manager.Memory import GameMemory, TargetMemory
 from agent.dialogue_manager.dm_threshold import DialogueManager
+from agent.game_integration.game_updates import GameUpdates
 from agent.nlg.nlg import NaturalLanguageGeneration
 from agent.nlu.nlu_kg_based import KGBasedNLU
 from agent.nlu.segmenter import Segmenter
@@ -11,17 +12,22 @@ from retico.core.audio.io import MicrophoneModule
 
 class Agent():
 
-    def __init__(self):
+    def __init__(self, game_id=1, game_connection=False):
         # self.microphone_input = MicrophoneModule(5000)
         # self.asr = GoogleASRModule()
         self.game_memory = GameMemory()
         self.target_memory = TargetMemory()
+        self.game_connection = game_connection
         self.chatin = ConsoleInput(self)
         self.segmenter = Segmenter(game_memory=self.game_memory, target_memory=self.target_memory)
         self.nlu = KGBasedNLU()
         self.dm = DialogueManager(game_memory=self.game_memory, target_memory=self.target_memory)
         self.nlg = NaturalLanguageGeneration(game_memory=self.game_memory, target_memory=self.target_memory)
         self.printer = PrintModule()
+
+        # Execute the following only if the game is conncted
+        if self.game_connection:
+            self.game_updates = GameUpdates(game_id)
 
     def setup(self):
         # connect the modules so they can listen to the IUs from the other modules
@@ -33,6 +39,10 @@ class Agent():
         self.dm.subscribe(self.nlg)
         self.nlg.subscribe(self.printer)
 
+        # Execute the following only if the game is conncted
+        if self.game_connection:
+            self.game_updates.subscribe(self.dm)
+
     def start_agent(self):
         # self.microphone_input.run()
         # self.asr.run()
@@ -43,6 +53,10 @@ class Agent():
         self.nlg.run()
         self.printer.run()
 
+        #Execute the following only if the game is conncted
+        if self.game_connection:
+            self.game_updates.run()
+
     def stop_agent(self):
         # self.microphone_input.stop()
         # self.asr.stop()
@@ -52,3 +66,7 @@ class Agent():
         self.dm.stop()
         self.nlg.stop()
         self.printer.stop()
+
+        #Execute the following only if the game is conncted
+        if self.game_connection:
+            self.game_updates.stop()
