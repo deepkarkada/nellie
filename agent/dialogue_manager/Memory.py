@@ -9,6 +9,8 @@ class GameMemory:
     def __init__(self):
         self.remaining_game_time = -1
         self.current_score = 0
+        self.point_array = []
+        self.game_state = "Init"
         self.total_guesses = 0
         self.total_human_turns = 0
         self.total_agent_turns = 0
@@ -24,6 +26,18 @@ class GameMemory:
 
     def get_current_score(self):
         return self.current_score
+
+    def set_point_array(self, point_array):
+        self.point_array = point_array
+
+    def get_point_array(self):
+        return self.point_array
+
+    def set_game_state(self, game_state):
+        self.game_state = game_state
+
+    def get_game_state(self):
+        return self.game_state
 
     def increment_total_guesses(self):
         self.total_guesses += 1
