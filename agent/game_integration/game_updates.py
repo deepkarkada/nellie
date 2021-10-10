@@ -29,11 +29,12 @@ class GameUpdates(abstract.AbstractProducingModule):
         self.game_id = game_id
 
     def select_country(self, country_id):
-        r = requests.get(url="http://localhost:8001/game/" + str(self.game_id), params={"selection": country_id})
+        selected_country = '{\"selection\": \"' + country_id + "\"}"
+        r = requests.patch(url="http://localhost:8001/game/" + str(self.game_id) + "/", data=selected_country)
 
     def process_iu(self, input_iu):
         time.sleep(0.5)
-        r = requests.get(url="http://localhost:8001/game/" + str(self.game_id), params={})
+        r = requests.get(url="http://localhost:8001/game/" + str(self.game_id) + "/", params={})
         data = r.json()
 
         output_iu = self.create_iu(input_iu)

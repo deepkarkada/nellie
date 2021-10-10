@@ -29,7 +29,7 @@ class DialogueManager(abstract.AbstractModule):
 
     @staticmethod
     def output_iu():
-        return [DialogueActIU]
+        return DialogueActIU
 
     def read_country_ids(self):
         with open("../data/agent/countrynames_id.txt") as f:
@@ -47,6 +47,7 @@ class DialogueManager(abstract.AbstractModule):
         self.game_memory = game_memory
         self.target_memory = target_memory
         self.read_country_ids()
+        self.game = None
 
     def get_current_dialogue_act(self, input_iu):
         return input_iu.act, input_iu.concepts, input_iu.confidence
@@ -87,10 +88,10 @@ class DialogueManager(abstract.AbstractModule):
                 output_iu.set_act("Skip")
                 return output_iu
         elif type(input_iu) is GameStateUpdateIU:
-            print(
+            """print(
                 "DM is processing a game state update; game state is " + str(input_iu.game_state) + "; we have " + str(
                     input_iu.time_left) + " seconds left in the game and currently scored " + str(
-                    input_iu.points) + " points.")
+                    input_iu.points) + " points.")"""
             self.game_memory.set_current_score(input_iu.points)
             self.game_memory.set_remaining_game_time(input_iu.time_left)
             self.game_memory.set_point_array(input_iu.point_array)
