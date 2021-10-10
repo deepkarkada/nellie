@@ -202,7 +202,7 @@ class KGBasedNLU(abstract.AbstractModule):
         entitynames_dict = data.ids2entities
 
         model = ConvE(num_entities, num_relations)
-        model.load_state_dict(torch.load('/home/deep/Dialogue/nellie/agent/nlu/models/conve.pt'))
+        model.load_state_dict(torch.load(os.path.join(os.getcwd(), 'nlu/models/conve.pt')))
         model.eval()
 
         rel = self.relation_extraction(current_text)
