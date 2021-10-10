@@ -31,6 +31,7 @@ class GameUpdates(abstract.AbstractProducingModule):
     def select_country(self, country_id):
         selected_country = '{\"selection\": \"' + country_id + "\"}"
         r = requests.patch(url="http://localhost:8001/game/" + str(self.game_id) + "/", data=selected_country)
+        #TODO handle server response here
 
     def process_iu(self, input_iu):
         time.sleep(0.5)

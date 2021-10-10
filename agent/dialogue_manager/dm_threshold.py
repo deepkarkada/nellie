@@ -74,6 +74,8 @@ class DialogueManager(abstract.AbstractModule):
 
                 # The agent always keeps the country with the highest confidence selected
                 self.select_country(self.country_to_ids[country_max_conf])
+                self.target_memory.select_country(self.country_to_ids[country_max_conf])
+                self.game_memory.append_current_selection_to_list(self.country_to_ids[country_max_conf])
 
                 print("DM is processing a DA of type " + str(act) + " with max confidence country for " + str(
                     country_max_conf) + " (" + str(max_conf) + ")")

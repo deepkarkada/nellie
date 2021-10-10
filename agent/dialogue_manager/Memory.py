@@ -15,6 +15,7 @@ class GameMemory:
         self.total_guesses = 0
         self.total_human_turns = 0
         self.total_agent_turns = 0
+        self.target_country_count = 1  # TODO: This is the count how many targets we are in already, needs to be implemented
 
     def set_remaining_game_time(self, time):
         self.remaining_game_time = time
@@ -61,6 +62,21 @@ class GameMemory:
     def get_total_turn(self):
         return self.total_agent_turns + self.total_human_turns
 
+    def append_current_selection_to_list(self, country_id):
+        if len(self.selection_array) < self.target_country_count:
+            self.selection_array.append(country_id)
+        else:
+            self.selection_array[self.target_country_count-1] = country_id
+
+    def get_selection_array(self):
+        return self.selection_array
+
+    def increment_target_country_count(self):
+        self.target_country_count += 1
+
+    def get_target_country_count(self):
+        return self.target_country_count
+
 
 class TargetMemory:
     """
@@ -95,6 +111,12 @@ class TargetMemory:
 
     def get_total_turns(self):
         return self.agent_turns + self.human_turns
+
+    def select_country(self, country_id):
+        self.current_selection = country_id
+
+    def get_selected_countr(self):
+        return self.current_selection
 
     def wipe_memory(self):
         self.time_spent = 0
