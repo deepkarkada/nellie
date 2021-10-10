@@ -10,6 +10,7 @@ class GameMemory:
         self.remaining_game_time = -1
         self.current_score = 0
         self.point_array = []
+        self.selection_array = []
         self.game_state = "Init"
         self.total_guesses = 0
         self.total_human_turns = 0
@@ -72,6 +73,7 @@ class TargetMemory:
         self.time_spent = 0
         self.human_turns = 0
         self.agent_turns = 0
+        self.current_selection = None
 
     def set_time_spent(self, time):
         self.time_spent = time
