@@ -28,6 +28,9 @@ class GameUpdates(abstract.AbstractProducingModule):
         super().__init__(**kwargs)
         self.game_id = game_id
 
+    def select_country(self, country_id):
+        r = requests.get(url="http://localhost:8001/game/" + str(self.game_id), params={"selection": country_id})
+
     def process_iu(self, input_iu):
         time.sleep(0.5)
         r = requests.get(url="http://localhost:8001/game/" + str(self.game_id), params={})

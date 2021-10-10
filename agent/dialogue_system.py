@@ -28,6 +28,7 @@ class Agent():
         # Execute the following only if the game is conncted
         if self.game_connection:
             self.game_updates = GameUpdates(game_id)
+            self.dm.set_game_link(self.game_updates)
 
     def setup(self):
         # connect the modules so they can listen to the IUs from the other modules
