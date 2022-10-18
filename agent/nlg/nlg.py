@@ -41,6 +41,7 @@ class NaturalLanguageGeneration(abstract.AbstractModule):
 
     def process_iu(self, input_iu):
         act, concepts, confidence = self.get_current_dialogue_act(input_iu)
+        print("NLG is processing a DA of type " + str(act))
         if not act:
             return None
         print("NLG is processing a DA of type " + str(act) + " with the following values - Concept: " + str(concepts) + "; Confidence: " + str(confidence))

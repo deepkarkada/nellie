@@ -205,9 +205,21 @@ class KGBasedNLU(abstract.AbstractModule):
         model.load_state_dict(torch.load(os.path.join(os.getcwd(), 'nlu/models/conve.pt')))
         model.eval()
 
-        rel = self.relation_extraction(current_text)
+        ## Extract the relation type
+        ## Predictions can include rel predictions with and without 'reverse' string ==> both are valid
+        rel = self.relation_extraction(current_text).split('_reverse')[0]
+        
+        ## To get the predictions for the target entity, adding 'reverse' to the current relation
         new_rel = rel + '_reverse'
+        
         ent = self.entity_extraction(current_text, entitynames_dict)
+
+        if 'OtherRel' in rel:
+            contains_shape = True
+            new_rel = 'HasShape'
+        
+        # print(f'====> Extracted entities:{ent}')
+        # print(f'====> Extracted relations:{[new_rel]}')
 
         h_idx = data.entity_ids[ent]
         r_idx = data.rel_ids[new_rel]

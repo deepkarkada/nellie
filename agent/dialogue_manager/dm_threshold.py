@@ -73,16 +73,20 @@ class DialogueManager(abstract.AbstractModule):
                 max_conf = pred_entities[country_max_conf]
 
                 # The agent always keeps the country with the highest confidence selected
-                self.select_country(self.country_to_ids[country_max_conf])
-                self.target_memory.select_country(self.country_to_ids[country_max_conf])
-                self.game_memory.append_current_selection_to_list(self.country_to_ids[country_max_conf])
+                country_id = 'NP'
+                for k, v in self.country_to_ids.items():
+                    if country_max_conf in k:
+                        country_id = v
+                self.select_country(country_id)
+                self.target_memory.select_country(country_id)
+                self.game_memory.append_current_selection_to_list(country_id)
 
                 print("DM is processing a DA of type " + str(act) + " with max confidence country for " + str(
                     country_max_conf) + " (" + str(max_conf) + ")")
 
                 if max_conf >= THRESHOLD_IDENTIFIED:
                     output_iu = self.create_iu(input_iu)
-                    output_iu.set_act("TargetIdentified", self.country_to_ids[country_max_conf])
+                    output_iu.set_act("TargetIdentified", country_id)
                     return output_iu
 
             if self.target_memory.get_human_turns() >= THRESHOLD_SKIP:
